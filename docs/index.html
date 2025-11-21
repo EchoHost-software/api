@@ -2,32 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EchoHost API Coder & Decoder</title>
+  <title>EchoHost API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: "Segoe UI", Roboto, sans-serif;
+      font-family: monospace;
       background: #0d1117;
       color: #e6edf3;
       margin: 0;
-      padding: 40px;
-      text-align: center;
+      padding: 20px;
     }
-    h1 {
-      color: #58a6ff;
-      font-size: 2rem;
+    textarea, button {
+      display: block;
+      margin: 20px auto;
+      font-family: monospace;
     }
     textarea {
       width: 90%;
       max-width: 600px;
       height: 150px;
-      margin: 20px 0;
       padding: 10px;
       border-radius: 8px;
       border: 1px solid #30363d;
       background: #161b22;
       color: #e6edf3;
-      font-family: monospace;
     }
     button {
       background: #58a6ff;
@@ -44,30 +42,17 @@
     }
     .output {
       margin-top: 20px;
-      background: #161b22;
-      padding: 15px;
-      border-radius: 8px;
-      word-wrap: break-word;
       white-space: pre-wrap;
+      word-wrap: break-word;
       max-width: 800px;
       margin-left: auto;
       margin-right: auto;
-    }
-    a {
-      color: #79c0ff;
-      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-<h1>EchoHost API Coder & Decoder</h1>
-<div id="mode">Loading...</div>
-<div class="output" id="output">...</div>
-
 <script>
-  const output = document.getElementById("output");
-  const mode = document.getElementById("mode");
   const path = window.location.pathname;
   const hash = window.location.hash.substring(1);
 
@@ -90,11 +75,23 @@
     }
   }
 
+  function renderDecoder() {
+    document.body.innerHTML = "<pre>" + (
+      hash
+        ? decodeAPI(hash)
+        : JSON.stringify({
+            service: "EchoHost API",
+            status: "ok",
+            message: "No data provided"
+          }, null, 2)
+    ) + "</pre>";
+  }
+
   function renderCoder() {
-    mode.textContent = "Coder Mode";
-    output.innerHTML = `
+    document.body.innerHTML = `
+      <h1>EchoHost API Coder</h1>
       <p>Enter your payload below. It will be encoded into a usable API URL.</p>
-      <textarea id="input" placeholder='Type text or JSON here...'></textarea><br>
+      <textarea id="input" placeholder='Type text or JSON here...'></textarea>
       <button onclick="generateURL()">Generate API URL</button>
       <div class="output" id="urlOutput">Your encoded API URL will appear here.</div>
     `;
@@ -116,19 +113,6 @@
       <strong>Encoded URL:</strong><br>
       <a href="${url}" target="_blank">${url}</a>
     `;
-  }
-
-  function renderDecoder() {
-    mode.textContent = "Decoder Mode";
-    if (!hash) {
-      output.textContent = JSON.stringify({
-        service: "EchoHost API",
-        status: "ok",
-        message: "No data provided"
-      }, null, 2);
-    } else {
-      output.textContent = decodeAPI(hash);
-    }
   }
 
   // Route based on path
