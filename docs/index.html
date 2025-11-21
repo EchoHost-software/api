@@ -2,211 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>EchoHost API Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EchoHost API Documentation</title>
-
   <style>
     body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #0d0d0f;
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
       color: #fff;
-    }
-
-    /* Navbar */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-    }
-
-    header h1 {
-      color: #4bc0ff;
       margin: 0;
+      padding: 20px;
     }
 
-    header nav a {
-      color: #fff;
-      text-decoration: none;
-      margin-left: 20px;
-    }
-
-    /* Hero */
-    .hero {
-      padding: 100px 40px;
+    h1 {
+      font-size: 2.4rem;
       text-align: center;
-      background: linear-gradient(145deg, #0c1b29, #00141f);
+      margin-bottom: 25px;
     }
 
-    .hero h2 {
-      font-size: 2.8rem;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      opacity: .85;
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.2rem;
-    }
-
-    /* Content */
-    .content {
-      padding: 50px 40px;
-      max-width: 1000px;
-      margin: auto;
-      line-height: 1.7rem;
-    }
-
-    .section {
-      margin-bottom: 50px;
-    }
-
-    .section h3 {
-      color: #4bc0ff;
-      font-size: 1.6rem;
-    }
-
-    pre {
-      background: #0b0b0d;
-      padding: 15px;
+    #editor-box {
+      background: #1a1a1a;
+      padding: 20px;
       border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow-x: auto;
-      margin-top: 10px;
+      margin-bottom: 30px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    code {
-      color: #4bc0ff;
-      font-size: .95rem;
+    textarea {
+      width: 100%;
+      height: 140px;
+      resize: none;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: #000;
+      color: #0f0;
     }
 
-    /* Footer */
-    footer {
+    button {
+      margin-top: 15px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 6px;
+      background: #31cc31;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #28a828;
+    }
+
+    #generated-url {
+      margin-top: 20px;
+      word-break: break-all;
       text-align: center;
-      padding: 25px;
-      opacity: .5;
+      font-size: 1rem;
+    }
+
+    #output {
+      margin-top: 40px;
+      padding: 20px;
+      background: #111;
+      border-left: 4px solid #31cc31;
+      white-space: pre-wrap;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>EchoHost API</h1>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/api">API Docs</a>
-    <a href="/login">Login</a>
-  </nav>
-</header>
+  <h1>EchoHost API Service</h1>
 
-<section class="hero">
-  <h2>EchoHost Server API</h2>
-  <p>The internal API used by EchoHost server software. Control services, manage deployments, read system stats, automate tasks, and build custom tools on top of EchoHost.</p>
-</section>
-
-<div class="content">
-
-  <div class="section">
-    <h3>📌 Base URL</h3>
-    <p>The EchoHost local server API runs locally on your machine or server:</p>
-    <pre><code>http://localhost:5050/api/v1</code></pre>
+  <!-- Creator Box -->
+  <div id="editor-box">
+    <label>Create Your API Output:</label>
+    <textarea id="apiText" placeholder="Type your API text here..."></textarea>
+    <button onclick="generateAPI()">Generate API URL</button>
+    <div id="generated-url"></div>
   </div>
 
-  <div class="section">
-    <h3>🔑 Authentication</h3>
-    <p>Every request must include your EchoHost API key generated in the dashboard.</p>
-    <pre><code>
-GET /system/info
-Authorization: Bearer YOUR_API_KEY
-    </code></pre>
-  </div>
+  <!-- Output box for viewing shared API URLs -->
+  <div id="output"></div>
 
-  <div class="section">
-    <h3>🖥️ Get Server Information</h3>
-    <p>Returns host machine details, uptime, OS, CPU and memory usage.</p>
-    <pre><code>
-GET /system/info
+  <script>
+    // Encode text into URL-safe format
+    function encodeAPI(text) {
+      return text.split("\n").map(line => line.replace(/ /g, "%")).join("newline");
+    }
 
-Response:
-{
-  "os": "Ubuntu 22.04",
-  "cpu_usage": 14,
-  "memory_usage": 27,
-  "uptime": "05:12:44"
-}
-    </code></pre>
-  </div>
+    // Decode from URL hash back to readable text
+    function decodeAPI(encoded) {
+      return encoded
+        .replace(/newline/g, "\n")
+        .replace(/%/g, " ");
+    }
 
-  <div class="section">
-    <h3>📦 List Installed Services</h3>
-    <pre><code>
-GET /services
+    // Generate API URL
+    function generateAPI() {
+      const text = document.getElementById("apiText").value.trim();
+      if (!text) return;
 
-Response:
-[
-  { "name": "web-server", "status": "running" },
-  { "name": "echo-core", "status": "running" },
-  { "name": "database", "status": "stopped" }
-]
-    </code></pre>
-  </div>
+      const encoded = encodeAPI(text);
+      const url = `${window.location.origin}${window.location.pathname}#${encoded}`;
 
-  <div class="section">
-    <h3>▶️ Start a Service</h3>
-    <pre><code>
-POST /services/start
+      document.getElementById("generated-url").innerHTML =
+        `<p><strong>Your API URL:</strong></p><p>${url}</p>`;
+    }
 
-Body:
-{
-  "service": "web-server"
-}
+    // Load API from URL hash on page load
+    function loadAPIFromHash() {
+      if (window.location.hash.length > 1) {
+        const encoded = window.location.hash.substring(1);
+        const decoded = decodeAPI(encoded);
+        document.getElementById("output").innerText = decoded;
+      }
+    }
 
-Response:
-{
-  "success": true,
-  "message": "Service started."
-}
-    </code></pre>
-  </div>
-
-  <div class="section">
-    <h3>🛠️ Deploy an Application</h3>
-    <pre><code>
-POST /deploy
-
-Body:
-{
-  "repo": "https://github.com/user/project",
-  "branch": "main"
-}
-
-Response:
-{
-  "status": "deploying",
-  "id": "DEPLOY_4281"
-}
-    </code></pre>
-  </div>
-
-  <div class="section">
-    <h3>📡 WebSocket Realtime Updates</h3>
-    <p>EchoHost supports realtime logs and system messages.</p>
-    <pre><code>
-ws://localhost:5050/ws/logs
-    </code></pre>
-  </div>
-
-</div>
-
-<footer>
-  EchoHost © 2025 – Server Software & Automation Tools
-</footer>
+    loadAPIFromHash();
+  </script>
 
 </body>
 </html>
+
