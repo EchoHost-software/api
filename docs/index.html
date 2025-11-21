@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>EchoHost API Domain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #58a6ff;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    p {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+    .endpoint {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 10px auto;
+      max-width: 600px;
+      text-align: left;
+    }
+    code {
+      background: #21262d;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #79c0ff;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>EchoHost API</h1>
+  <p>Welcome to the EchoHost API domain. Use the endpoints below to access raw data and services.</p>
+
+  <div class="endpoint">
+    <strong>Raw Data Endpoint:</strong><br>
+    <code>/api/raw#ENCODED_DATA</code><br>
+    <small>Pass encoded payloads via hash to decode and display.</small>
+  </div>
+
+  <div class="endpoint">
+    <strong>Status Endpoint:</strong><br>
+    <code>/api/status</code><br>
+    <small>Returns current API health and uptime metrics.</small>
+  </div>
+
+  <div class="endpoint">
+    <strong>Docs:</strong><br>
+    <code>/docs</code><br>
+    <small>View full API documentation and usage examples.</small>
+  </div>
+
+  <footer>
+    EchoHost &copy; 2025 — Modular API Domain
+  </footer>
+
+</body>
+</html>
