@@ -1,32 +1,75 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EchoHost Raw API</title>
+  <title>EchoHost API Decoder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: monospace;
+      background: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #58a6ff;
+    }
+    pre {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 15px;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .error {
+      color: #ef5350;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
+<h1>EchoHost API Decoder</h1>
+<pre id="output">Awaiting payload...</pre>
+
 <script>
   function decodeAPI(encoded) {
-    return encoded
-      .replace(/newline/g, "\n")
-      .replace(/%/g, " ");
+    try {
+      let decoded = encoded.replace(/newline/g, "\n");
+      decoded = decodeURIComponent(decoded);
+
+      // Try JSON pretty-print
+      try {
+        const json = JSON.parse(decoded);
+        return JSON.stringify(json, null, 2);
+      } catch {
+        return decoded; // Not JSON, just raw text
+      }
+    } catch (err) {
+      return "Error decoding: " + err.message;
+    }
   }
 
-  function outputRaw() {
+  function renderAPI() {
     const hash = window.location.hash.substring(1);
+    const output = document.getElementById("output");
 
     if (!hash) {
-      document.body.innerText = "EchoHost API\nNo data provided.";
+      output.textContent = JSON.stringify({
+        service: "EchoHost API",
+        status: "ok",
+        message: "No data provided"
+      }, null, 2);
       return;
     }
 
-    const decoded = decodeAPI(hash);
-    document.body.innerText = decoded;
+    output.textContent = decodeAPI(hash);
   }
 
-  outputRaw();
+  renderAPI();
 </script>
 
 </body>
