@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EchoHost API</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoHost API Documentation</title>
 
   <style>
     body {
@@ -26,135 +26,186 @@
     }
 
     header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-      font-weight: 700;
       color: #4bc0ff;
+      margin: 0;
     }
 
-    header a {
+    header nav a {
       color: #fff;
       text-decoration: none;
-      font-size: 1rem;
       margin-left: 20px;
     }
 
     /* Hero */
     .hero {
+      padding: 100px 40px;
       text-align: center;
-      padding: 120px 30px;
-      background: linear-gradient(140deg, #121217, #0c1b29, #001926);
+      background: linear-gradient(145deg, #0c1b29, #00141f);
     }
 
     .hero h2 {
-      font-size: 3rem;
+      font-size: 2.8rem;
       margin-bottom: 10px;
     }
 
     .hero p {
+      opacity: .85;
+      max-width: 700px;
+      margin: auto;
       font-size: 1.2rem;
-      opacity: 0.85;
     }
 
-    .buttons {
-      margin-top: 30px;
+    /* Content */
+    .content {
+      padding: 50px 40px;
+      max-width: 1000px;
+      margin: auto;
+      line-height: 1.7rem;
     }
 
-    .btn {
-      display: inline-block;
-      padding: 14px 28px;
-      margin: 10px;
-      background: #4bc0ff;
-      border-radius: 10px;
-      color: #000;
-      font-weight: bold;
-      text-decoration: none;
-      transition: 0.2s;
+    .section {
+      margin-bottom: 50px;
     }
 
-    .btn:hover {
-      background: #36aee6;
-    }
-
-    /* Features */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      padding: 60px 40px;
-    }
-
-    .card {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 25px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h3 {
-      margin-top: 0;
+    .section h3 {
       color: #4bc0ff;
+      font-size: 1.6rem;
+    }
+
+    pre {
+      background: #0b0b0d;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+
+    code {
+      color: #4bc0ff;
+      font-size: .95rem;
     }
 
     /* Footer */
     footer {
       text-align: center;
-      padding: 30px;
-      opacity: 0.6;
+      padding: 25px;
+      opacity: .5;
     }
   </style>
 </head>
-
 <body>
 
 <header>
   <h1>EchoHost API</h1>
   <nav>
-    <a href="#api">API Docs</a>
-    <a href="#features">Features</a>
+    <a href="/">Home</a>
+    <a href="/api">API Docs</a>
     <a href="/login">Login</a>
   </nav>
 </header>
 
 <section class="hero">
-  <h2>Powerful, Fast, and Secure API Hosting</h2>
-  <p>EchoHost helps you deploy, manage, and scale APIs with zero friction.</p>
-
-  <div class="buttons">
-    <a href="#api" class="btn">View API Docs</a>
-    <a href="/login" class="btn">Sign In</a>
-  </div>
+  <h2>EchoHost Server API</h2>
+  <p>The internal API used by EchoHost server software. Control services, manage deployments, read system stats, automate tasks, and build custom tools on top of EchoHost.</p>
 </section>
 
-<section id="features" class="features">
-  <div class="card">
-    <h3>⚡ Ultra-Fast</h3>
-    <p>Optimized for speed so your clients experience minimal latency.</p>
+<div class="content">
+
+  <div class="section">
+    <h3>📌 Base URL</h3>
+    <p>The EchoHost local server API runs locally on your machine or server:</p>
+    <pre><code>http://localhost:5050/api/v1</code></pre>
   </div>
 
-  <div class="card">
-    <h3>🔒 Secure Access</h3>
-    <p>OAuth2, JWT and dynamic keys keep your API safe from attacks.</p>
+  <div class="section">
+    <h3>🔑 Authentication</h3>
+    <p>Every request must include your EchoHost API key generated in the dashboard.</p>
+    <pre><code>
+GET /system/info
+Authorization: Bearer YOUR_API_KEY
+    </code></pre>
   </div>
 
-  <div class="card">
-    <h3>📡 Realtime Logs</h3>
-    <p>Monitor traffic, performance, and tokens directly from your dashboard.</p>
+  <div class="section">
+    <h3>🖥️ Get Server Information</h3>
+    <p>Returns host machine details, uptime, OS, CPU and memory usage.</p>
+    <pre><code>
+GET /system/info
+
+Response:
+{
+  "os": "Ubuntu 22.04",
+  "cpu_usage": 14,
+  "memory_usage": 27,
+  "uptime": "05:12:44"
+}
+    </code></pre>
   </div>
 
-  <div class="card">
-    <h3>🧩 Simple Integration</h3>
-    <p>Clean, unified endpoints for easy connection to your software.</p>
+  <div class="section">
+    <h3>📦 List Installed Services</h3>
+    <pre><code>
+GET /services
+
+Response:
+[
+  { "name": "web-server", "status": "running" },
+  { "name": "echo-core", "status": "running" },
+  { "name": "database", "status": "stopped" }
+]
+    </code></pre>
   </div>
-</section>
+
+  <div class="section">
+    <h3>▶️ Start a Service</h3>
+    <pre><code>
+POST /services/start
+
+Body:
+{
+  "service": "web-server"
+}
+
+Response:
+{
+  "success": true,
+  "message": "Service started."
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h3>🛠️ Deploy an Application</h3>
+    <pre><code>
+POST /deploy
+
+Body:
+{
+  "repo": "https://github.com/user/project",
+  "branch": "main"
+}
+
+Response:
+{
+  "status": "deploying",
+  "id": "DEPLOY_4281"
+}
+    </code></pre>
+  </div>
+
+  <div class="section">
+    <h3>📡 WebSocket Realtime Updates</h3>
+    <p>EchoHost supports realtime logs and system messages.</p>
+    <pre><code>
+ws://localhost:5050/ws/logs
+    </code></pre>
+  </div>
+
+</div>
 
 <footer>
-  EchoHost © 2025 — API Server Software
+  EchoHost © 2025 – Server Software & Automation Tools
 </footer>
 
 </body>
