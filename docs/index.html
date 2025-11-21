@@ -12,22 +12,19 @@
       margin: 0;
       padding: 20px;
     }
-    textarea, button {
-      display: block;
-      margin: 20px auto;
-      font-family: monospace;
-    }
-    textarea {
-      width: 90%;
+    .coder textarea {
+      width: 100%;
       max-width: 600px;
       height: 150px;
+      margin: 20px auto;
+      display: block;
       padding: 10px;
       border-radius: 8px;
       border: 1px solid #30363d;
       background: #161b22;
       color: #e6edf3;
     }
-    button {
+    .coder button {
       background: #58a6ff;
       border: none;
       padding: 10px 20px;
@@ -35,18 +32,23 @@
       cursor: pointer;
       font-weight: bold;
       color: #000;
+      display: block;
+      margin: 0 auto;
     }
-    button:hover {
+    .coder button:hover {
       background: #1f6feb;
       color: #fff;
     }
-    .output {
+    .coder .output {
       margin-top: 20px;
       white-space: pre-wrap;
       word-wrap: break-word;
       max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
+      margin: 20px auto;
+    }
+    .decoder pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
   </style>
 </head>
@@ -57,8 +59,7 @@
   const hash = window.location.hash.substring(1);
 
   function encodeAPI(raw) {
-    let encoded = raw.replace(/\n/g, "newline");
-    return encodeURIComponent(encoded);
+    return encodeURIComponent(raw.replace(/\n/g, "newline"));
   }
 
   function decodeAPI(encoded) {
@@ -76,24 +77,24 @@
   }
 
   function renderDecoder() {
-    document.body.innerHTML = "<pre>" + (
-      hash
-        ? decodeAPI(hash)
-        : JSON.stringify({
-            service: "EchoHost API",
-            status: "ok",
-            message: "No data provided"
-          }, null, 2)
-    ) + "</pre>";
+    const raw = hash ? decodeAPI(hash) : JSON.stringify({
+      service: "EchoHost API",
+      status: "ok",
+      message: "No data provided"
+    }, null, 2);
+
+    document.body.innerHTML = `<div class="decoder"><pre>${raw}</pre></div>`;
   }
 
   function renderCoder() {
     document.body.innerHTML = `
-      <h1>EchoHost API Coder</h1>
-      <p>Enter your payload below. It will be encoded into a usable API URL.</p>
-      <textarea id="input" placeholder='Type text or JSON here...'></textarea>
-      <button onclick="generateURL()">Generate API URL</button>
-      <div class="output" id="urlOutput">Your encoded API URL will appear here.</div>
+      <div class="coder">
+        <h1>EchoHost API Coder</h1>
+        <p>Enter your payload below. It will be encoded into a usable API URL.</p>
+        <textarea id="input" placeholder='Type text or JSON here...'></textarea>
+        <button onclick="generateURL()">Generate API URL</button>
+        <div class="output" id="urlOutput">Your encoded API URL will appear here.</div>
+      </div>
     `;
   }
 
@@ -116,7 +117,7 @@
   }
 
   // Route based on path
-  if (path === "/api") {
+  if (path.endsWith("/api")) {
     renderDecoder();
   } else {
     renderCoder();
