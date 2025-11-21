@@ -4,111 +4,71 @@
   <meta charset="UTF-8">
   <title>EchoHost API Page</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
+  <style id="main-style">
     body {
       font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: #fff;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1 {
-      font-size: 2.4rem;
-      text-align: center;
-      margin-bottom: 25px;
-    }
-
-    #editor-box {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
+      background: #d9d9d9;
+      color: #000;
+      margin: 30px;
     }
 
     textarea {
       width: 100%;
-      height: 140px;
-      resize: none;
-      padding: 10px;
-      border-radius: 6px;
+      height: 150px;
+      background: transparent;
       border: none;
       outline: none;
       font-size: 1rem;
-      background: #000;
-      color: #0f0;
+      color: #000;
+      padding: 10px;
     }
 
     button {
-      margin-top: 15px;
-      width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
+      margin-top: 10px;
+      padding: 10px 15px;
+      font-size: 1rem;
       border: none;
-      border-radius: 6px;
       background: #31cc31;
-      color: black;
-      font-weight: bold;
+      color: #000;
       cursor: pointer;
-      transition: 0.2s;
-    }
-
-    button:hover {
-      background: #28a828;
     }
 
     #generated-url {
-      margin-top: 20px;
+      margin-top: 15px;
       word-break: break-all;
-      text-align: center;
-      font-size: 1rem;
     }
 
     #output {
       margin-top: 40px;
-      padding: 20px;
-      background: #111;
-      border-left: 4px solid #31cc31;
       white-space: pre-wrap;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
       font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
-  <h1>EchoHost API Service</h1>
+  <!-- UI (hidden automatically when "api" is in URL) -->
+  <div id="ui-container">
+    <h2>EchoHost API Generator</h2>
 
-  <!-- Creator Box -->
-  <div id="editor-box">
-    <label>Create Your API Output:</label>
-    <textarea id="apiText" placeholder="Type your API text here..."></textarea>
+    <textarea id="apiText" placeholder="Type your API output here..."></textarea>
     <button onclick="generateAPI()">Generate API URL</button>
+
     <div id="generated-url"></div>
   </div>
 
-  <!-- Output box for viewing shared API URLs -->
+  <!-- RAW or Generated output -->
   <div id="output"></div>
 
   <script>
-    // Encode text into URL-safe format
     function encodeAPI(text) {
       return text.split("\n").map(line => line.replace(/ /g, "%")).join("newline");
     }
 
-    // Decode from URL hash back to readable text
     function decodeAPI(encoded) {
-      return encoded
-        .replace(/newline/g, "\n")
-        .replace(/%/g, " ");
+      return encoded.replace(/newline/g, "\n").replace(/%/g, " ");
     }
 
-    // Generate API URL
     function generateAPI() {
       const text = document.getElementById("apiText").value.trim();
       if (!text) return;
@@ -117,10 +77,9 @@
       const url = `${window.location.origin}${window.location.pathname}#${encoded}`;
 
       document.getElementById("generated-url").innerHTML =
-        `<p><strong>Your API URL:</strong></p><p>${url}</p>`;
+        `<strong>Your API URL:</strong><br>${url}`;
     }
 
-    // Load API from URL hash on page load
     function loadAPIFromHash() {
       if (window.location.hash.length > 1) {
         const encoded = window.location.hash.substring(1);
@@ -129,9 +88,23 @@
       }
     }
 
+    function checkRawMode() {
+      const isRaw = window.location.pathname.toLowerCase().includes("api");
+
+      if (isRaw) {
+        // Hide UI + Remove background + Remove styling
+        document.getElementById("ui-container").style.display = "none";
+        document.getElementById("main-style").remove();
+
+        document.body.style.background = "#fff";
+        document.body.style.color = "#000";
+        document.body.style.margin = "10px";
+      }
+    }
+
+    checkRawMode();
     loadAPIFromHash();
   </script>
 
 </body>
 </html>
-
