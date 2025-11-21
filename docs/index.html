@@ -82,11 +82,11 @@
     }
 
     const encoded = encodeAPI(input);
-    const url = window.location.origin + "/api/api#" + encoded;
+    const url = window.location.origin + "/api#" + encoded;
 
     output.innerHTML = `
       <strong>Encoded URL:</strong><br>
-      <a href="${url}" target="_blank">${url}</a>
+      <a href="api${url}" target="_blank">api${url}</a>
     `;
   }
 </script>
