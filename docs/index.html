@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EchoHost API Domain</title>
+  <title>EchoHost API Coder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -15,62 +15,81 @@
     }
     h1 {
       color: #58a6ff;
-      font-size: 2rem;
-      margin-bottom: 10px;
     }
-    p {
+    textarea {
+      width: 90%;
       max-width: 600px;
-      margin: 0 auto 20px;
-      line-height: 1.6;
-    }
-    .endpoint {
-      background: #161b22;
-      border: 1px solid #30363d;
+      height: 150px;
+      margin: 20px 0;
+      padding: 10px;
       border-radius: 8px;
+      border: 1px solid #30363d;
+      background: #161b22;
+      color: #e6edf3;
+      font-family: monospace;
+    }
+    button {
+      background: #58a6ff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #000;
+    }
+    button:hover {
+      background: #1f6feb;
+      color: #fff;
+    }
+    .output {
+      margin-top: 20px;
+      background: #161b22;
       padding: 15px;
-      margin: 10px auto;
-      max-width: 600px;
-      text-align: left;
+      border-radius: 8px;
+      word-wrap: break-word;
     }
-    code {
-      background: #21262d;
-      padding: 2px 6px;
-      border-radius: 4px;
+    a {
       color: #79c0ff;
-    }
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #8b949e;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
 
-  <h1>EchoHost API</h1>
-  <p>Welcome to the EchoHost API domain. Use the endpoints below to access raw data and services.</p>
+<h1>EchoHost API Coder</h1>
+<p>Enter your payload below. It will be encoded into a usable API URL.</p>
 
-  <div class="endpoint">
-    <strong>Raw Data Endpoint:</strong><br>
-    <code>/api/raw#ENCODED_DATA</code><br>
-    <small>Pass encoded payloads via hash to decode and display.</small>
-  </div>
+<textarea id="input" placeholder='Type text or JSON here...'></textarea><br>
+<button onclick="generateURL()">Generate API URL</button>
 
-  <div class="endpoint">
-    <strong>Status Endpoint:</strong><br>
-    <code>/api/status</code><br>
-    <small>Returns current API health and uptime metrics.</small>
-  </div>
+<div class="output" id="output">Your encoded API URL will appear here.</div>
 
-  <div class="endpoint">
-    <strong>Docs:</strong><br>
-    <code>/docs</code><br>
-    <small>View full API documentation and usage examples.</small>
-  </div>
+<script>
+  function encodeAPI(raw) {
+    // Replace newlines with token and encode
+    let encoded = raw.replace(/\n/g, "newline");
+    encoded = encodeURIComponent(encoded);
+    return encoded;
+  }
 
-  <footer>
-    EchoHost &copy; 2025 — Modular API Domain
-  </footer>
+  function generateURL() {
+    const input = document.getElementById("input").value.trim();
+    const output = document.getElementById("output");
+
+    if (!input) {
+      output.textContent = "Please enter some text or JSON.";
+      return;
+    }
+
+    const encoded = encodeAPI(input);
+    const url = window.location.origin + "/api#" + encoded;
+
+    output.innerHTML = `
+      <strong>Encoded URL:</strong><br>
+      <a href="${url}" target="_blank">${url}</a>
+    `;
+  }
+</script>
 
 </body>
 </html>
