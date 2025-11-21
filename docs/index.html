@@ -1,1 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EchoHost API</title>
 
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #0d0d0f;
+      color: #fff;
+    }
+
+    /* Navbar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4bc0ff;
+    }
+
+    header a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      margin-left: 20px;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 120px 30px;
+      background: linear-gradient(140deg, #121217, #0c1b29, #001926);
+    }
+
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.85;
+    }
+
+    .buttons {
+      margin-top: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 28px;
+      margin: 10px;
+      background: #4bc0ff;
+      border-radius: 10px;
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .btn:hover {
+      background: #36aee6;
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      padding: 60px 40px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 25px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #4bc0ff;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>EchoHost API</h1>
+  <nav>
+    <a href="#api">API Docs</a>
+    <a href="#features">Features</a>
+    <a href="/login">Login</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2>Powerful, Fast, and Secure API Hosting</h2>
+  <p>EchoHost helps you deploy, manage, and scale APIs with zero friction.</p>
+
+  <div class="buttons">
+    <a href="#api" class="btn">View API Docs</a>
+    <a href="/login" class="btn">Sign In</a>
+  </div>
+</section>
+
+<section id="features" class="features">
+  <div class="card">
+    <h3>⚡ Ultra-Fast</h3>
+    <p>Optimized for speed so your clients experience minimal latency.</p>
+  </div>
+
+  <div class="card">
+    <h3>🔒 Secure Access</h3>
+    <p>OAuth2, JWT and dynamic keys keep your API safe from attacks.</p>
+  </div>
+
+  <div class="card">
+    <h3>📡 Realtime Logs</h3>
+    <p>Monitor traffic, performance, and tokens directly from your dashboard.</p>
+  </div>
+
+  <div class="card">
+    <h3>🧩 Simple Integration</h3>
+    <p>Clean, unified endpoints for easy connection to your software.</p>
+  </div>
+</section>
+
+<footer>
+  EchoHost © 2025 — API Server Software
+</footer>
+
+</body>
+</html>
