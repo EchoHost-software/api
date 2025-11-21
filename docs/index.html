@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>EchoHost API Coder</title>
+  <title>EchoHost API Coder & Decoder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -15,6 +15,7 @@
     }
     h1 {
       color: #58a6ff;
+      font-size: 2rem;
     }
     textarea {
       width: 90%;
@@ -47,6 +48,10 @@
       padding: 15px;
       border-radius: 8px;
       word-wrap: break-word;
+      white-space: pre-wrap;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
     a {
       color: #79c0ff;
@@ -56,38 +61,81 @@
 </head>
 <body>
 
-<h1>EchoHost API Coder</h1>
-<p>Enter your payload below. It will be encoded into a usable API URL.</p>
-
-<textarea id="input" placeholder='Type text or JSON here...'></textarea><br>
-<button onclick="generateURL()">Generate API URL</button>
-
-<div class="output" id="output">Your encoded API URL will appear here.</div>
+<h1>EchoHost API Coder & Decoder</h1>
+<div id="mode">Loading...</div>
+<div class="output" id="output">...</div>
 
 <script>
+  const output = document.getElementById("output");
+  const mode = document.getElementById("mode");
+  const path = window.location.pathname;
+  const hash = window.location.hash.substring(1);
+
   function encodeAPI(raw) {
-    // Replace newlines with token and encode
     let encoded = raw.replace(/\n/g, "newline");
-    encoded = encodeURIComponent(encoded);
-    return encoded;
+    return encodeURIComponent(encoded);
+  }
+
+  function decodeAPI(encoded) {
+    try {
+      let decoded = encoded.replace(/newline/g, "\n");
+      decoded = decodeURIComponent(decoded);
+      try {
+        return JSON.stringify(JSON.parse(decoded), null, 2);
+      } catch {
+        return decoded;
+      }
+    } catch (err) {
+      return "Error decoding: " + err.message;
+    }
+  }
+
+  function renderCoder() {
+    mode.textContent = "Coder Mode";
+    output.innerHTML = `
+      <p>Enter your payload below. It will be encoded into a usable API URL.</p>
+      <textarea id="input" placeholder='Type text or JSON here...'></textarea><br>
+      <button onclick="generateURL()">Generate API URL</button>
+      <div class="output" id="urlOutput">Your encoded API URL will appear here.</div>
+    `;
   }
 
   function generateURL() {
     const input = document.getElementById("input").value.trim();
-    const output = document.getElementById("output");
+    const urlOutput = document.getElementById("urlOutput");
 
     if (!input) {
-      output.textContent = "Please enter some text or JSON.";
+      urlOutput.textContent = "Please enter some text or JSON.";
       return;
     }
 
     const encoded = encodeAPI(input);
     const url = window.location.origin + "/api#" + encoded;
 
-    output.innerHTML = `
+    urlOutput.innerHTML = `
       <strong>Encoded URL:</strong><br>
-      <a href="api${url}" target="_blank">api${url}</a>
+      <a href="${url}" target="_blank">${url}</a>
     `;
+  }
+
+  function renderDecoder() {
+    mode.textContent = "Decoder Mode";
+    if (!hash) {
+      output.textContent = JSON.stringify({
+        service: "EchoHost API",
+        status: "ok",
+        message: "No data provided"
+      }, null, 2);
+    } else {
+      output.textContent = decodeAPI(hash);
+    }
+  }
+
+  // Route based on path
+  if (path === "/api") {
+    renderDecoder();
+  } else {
+    renderCoder();
   }
 </script>
 
