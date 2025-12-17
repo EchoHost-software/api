@@ -79,6 +79,7 @@
   }
 
   function renderDecoder() {
+    const raw = hash.startsWith("api:") ? decodeAPI(hash.slice(4)) : ...
     const raw = hash ? decodeAPI(hash) : JSON.stringify({
       service: "EchoHost API",
       status: "ok",
@@ -110,7 +111,7 @@
     }
 
     const encoded = encodeAPI(input);
-    const url = window.location.origin + "/api#" + encoded;
+    const url = window.location.origin + "/#api:" + encoded;
 
     urlOutput.innerHTML = `
       <strong>Encoded URL:</strong><br>
@@ -119,7 +120,7 @@
   }
 
   // Route based on path
-  if (path.endsWith("/api")) {
+  if (hash.startsWith("api:")) {
     renderDecoder();
   } else {
     renderCoder();
