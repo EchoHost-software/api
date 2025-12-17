@@ -60,20 +60,14 @@
   const path = window.location.pathname;
   const hash = window.location.hash.substring(1);
 
-function encodeAPI(raw) {
-    return raw
-      .replace(/%/g, "%25")   // protect real %
-      .replace(/\n/g, "newline")
-      .replace(/ /g, "%");    // space → %
+  function encodeAPI(raw) {
+    return encodeURIComponent(raw.replace(/\n/g, "newline")).replace(/%20/g, "%");
   }
 
   function decodeAPI(encoded) {
     try {
-      let decoded = encoded
-        .replace(/%/g, " ")   // % → space
-        .replace(/newline/g, "\n")
-        .replace(/%25/g, "%"); // restore real %
-
+      let decoded = encoded.replace(/newline/g, "\n");
+      decoded = decodeURIComponent(decoded);
       try {
         return JSON.stringify(JSON.parse(decoded), null, 2);
       } catch {
