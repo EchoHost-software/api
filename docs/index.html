@@ -67,7 +67,7 @@
   function decodeAPI(encoded) {
     try {
       let decoded = encoded.replace(/newline/g, "\n");
-      decoded = decodeURIComponent(decoded);
+      decoded = decodeURIComponent(decoded.replace(/%/g, "%20"));
       try {
         return JSON.stringify(JSON.parse(decoded), null, 2);
       } catch {
